@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/02 14:04:43 by alex             ###   ########.fr       */
+/*   Updated: 2025/06/02 16:35:44 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PIPEX_H
 
 
-#include <unistd.h>
+#include <stdio.h>
 
 int	ft_atoi(const char *str);
 
