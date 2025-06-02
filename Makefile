@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -g3
 
 NAME = philo
 
-SRC =	src/ft_atoi.c src/pipex.c 
+SRC =	src/ft_atoi.c src/philo.c src/lst_philo.c src/main.c
 
 
 

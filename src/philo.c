@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:44:37 by alex              #+#    #+#             */
-/*   Updated: 2025/06/02 16:35:19 by alex             ###   ########.fr       */
+/*   Updated: 2025/06/03 00:14:54 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "../include/philo.h"
 
-void philo(int ac, char **av)
+void    *philo_behavior(void *arg)
 {
-    (void)ac;
-    (void)av;
-    
+    struct timeval time;
+
+    (void)arg;
+    gettimeofday(&time, NULL);
+    printf("time in ms is : %ld", (time.tv_sec));
+    printf("%ld\n", (time.tv_usec)/1000);
+    return (NULL);
 }
-
-int main(int ac, char **av)
+void philo(t_data *data)
 {
-    if(ac < 5)
-        return (printf("not enough arguments\n"));
-    if(ft_atoi(av[1]) < 1)
-        return (printf("not enough philosophers\n"));
-    if(ft_atoi(av[2]) < 0 || ft_atoi(av[3]) < 0 || ft_atoi(av[4]) < 0)
-        return (printf("latence can't be negative\n"));
-    if(av[3] && ft_atoi(av[3]) < 0)
-        return (printf("Can't be negative\n"));
-    philo(ac, av);
+    pthread_t thread;
+
+    (void)data;
+    pthread_create(&thread, NULL, function, "lala");
+    pthread_join(thread, NULL);
+    // sleep(2);
+    // pthread_detach(thread);
+    return ;
 }
