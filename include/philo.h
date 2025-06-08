@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/04 19:23:10 by alex             ###   ########.fr       */
+/*   Updated: 2025/06/08 15:00:40 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data
     int time_to_sleep;
     int nb_meal;
     int is_dead;
+    int full_meal;
     pthread_mutex_t *lock_tab;
 }               t_data;
 
@@ -44,6 +45,8 @@ typedef struct s_philo
 {
     t_data *data;
     int     index;
+    int     last_meal;
+    int     nb_of_meal;
 }              t_philo;
 
 // struct timeval {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:44:37 by alex              #+#    #+#             */
-/*   Updated: 2025/06/07 18:04:42 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:55:01 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,25 +95,72 @@ void	eat_routine(t_philo *philo, int index, int nb_philo)
 	}
 }
 
+int tv_to_int(struct timeval time)
+{
+	int time_full;
+
+	time_full = time.tv_sec;
+	time_full = time_full * 1000;
+	time_full = time_full + time.tv_usec;
+	return (time_full);
+}
+
+int time_diff(struct timeval start, struct timeval end)
+{
+	int start_full;
+	int end_full;
+
+	start_full = tv_to_int(start);	
+	end_full = tv_to_int(end);	
+
+	return (end_full - start_full)
+}
+
+int times_over(t_philo *philo, int time_to_action)
+{
+	struct timeval	time;
+	int time_micro;
+	int time_passed;
+
+	gettimeofday(&time, NULL);
+	time_micro = philo->last_meal + tv_to_int(time) + time_to_action;
+	if(time_micro > (philo->last_meal + (((philo->data)->time_to_die) * 1000)))
+	{
+		time_passed = time_micro - philo->last_meal;
+		return ((((philo->data)->time_to_die)) - time_passed);
+	}
+	return (0);
+}
+
 void	*philo_behavior(void *arg)
 {
 	t_philo	*philo;
+	struct timeval	time_start;
+	struct timeval	time_between;
+
 
 	philo = (t_philo *)arg;
-	// test
-	// while(1)
-	// {
-	//     printf("index is %d\n", philo->index);
-	//     usleep(3000 * 1000);
-	// }
 	// if (philo->index % 2 == 1)
 	// 	usleep(100);
-	eat_routine(philo, philo->index, (philo->data)->nb_philo);
-	sleep_routine(philo, philo->index);
-	think_routine(philo, philo->index);
-	// gettimeofday(&time, NULL);
-	// printf("%ld%ld %d is eating\n", (time.tv_sec), (time.tv_usec)/1000,
-	// *((int *)arg));
+	while (1)
+	{
+		gettimeofday(&time_start, NULL);
+		eat_routine(philo, philo->index, (philo->data)->nb_philo);
+		gettimeofday(&time_between, NULL);
+		if((philo->data)->is_dead > 0)
+			break;
+		if(time_diff(time_start, time_between) > (philo->data)->time_to_die)
+		{
+			printf("");
+			return ;
+		}
+		sleep_routine(philo, philo->index);
+		if((philo->data)->is_dead > 0)
+			break;
+		think_routine(philo, philo->index);
+		if((philo->data)->is_dead > 0)
+			break;
+	}
 	return (NULL);
 }
 
