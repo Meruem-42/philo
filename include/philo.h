@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/08 15:00:40 by alex             ###   ########.fr       */
+/*   Updated: 2025/06/08 19:00:23 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_philo
 {
     t_data *data;
     int     index;
-    int     last_meal;
+    long     last_meal;
     int     nb_of_meal;
 }              t_philo;
 
