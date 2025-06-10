@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/10 18:01:53 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:59:51 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_data
 	int				nb_meal;
 	int				is_dead;
 	int				is_full;
-	time_t			initial_time;
+	struct timeval		initial_time;
 	pthread_mutex_t	*lock_tab;
 }					t_data;
 
@@ -45,7 +45,7 @@ typedef struct s_philo
 {
 	t_data			*data;
 	int				index;
-	time_t			last_meal;
+	struct timeval			last_meal;
 	int				nb_eat;
 }					t_philo;
 

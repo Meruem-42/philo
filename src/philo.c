@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:44:37 by alex              #+#    #+#             */
-/*   Updated: 2025/06/10 18:04:37 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:28:20 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,13 @@ time_t	times_over(t_philo *philo, int time_to_action)
 	time_t			time_passed;
 
 	gettimeofday(&time, NULL);
-	time_micro = tv_to_ms(time) - philo->last_meal + time_to_action - 2;
+	time_micro = time_diff(philo->last_meal, time) + time_to_action;
+	printf("\t\t\t\t\t\tlast meal time of philo %d is %ld\n", philo->index + 1, time_diff((philo->data)->initial_time, philo->last_meal));
+	printf("\t\t\t\t\t\ttime since last meal %d is %ld\n", philo->index + 1, time_diff(philo->last_meal, time));
+	printf("\t\t\t\t\t\ttime at the end of action %d is %ld\n", philo->index + 1, time_micro);
 	if (time_micro > ((philo->data)->time_to_die))
 	{
-		time_passed = tv_to_ms(time) - philo->last_meal;
+		time_passed = time_diff(philo->last_meal, time);
 		return ((((philo->data)->time_to_die)) - time_passed);
 	}
 	return (0);
@@ -75,7 +78,7 @@ void	think_routine(t_philo *philo, int index)
 	time_to_think = ((philo->data)->time_to_die)
 		- ((philo->data)->time_to_sleep) - ((philo->data)->time_to_eat);
 	gettimeofday(&time, NULL);
-	printf("%ld%ld %d is thinking\n", (time.tv_sec), (time.tv_usec) / 1000,
+	printf("%ld %d is thinking\n", time_diff((philo->data)->initial_time, time),
 		index + 1);
 	if (time_to_think > 0)
 		usleep(time_to_think * 1000);
@@ -86,12 +89,12 @@ void	sleep_routine(t_philo *philo, int index)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	printf("%ld%ld %d is sleeping\n", (time.tv_sec), (time.tv_usec) / 1000,
+	printf("%ld %d is sleeping\n", time_diff((philo->data)->initial_time, time),
 		index + 1);
 	if (times_over(philo, (philo->data)->time_to_sleep) > 0)
 	{
-		printf("\t\t\t\t\t\t%ld\n", times_over(philo,
-				(philo->data)->time_to_sleep));
+		// printf("\t\t\t\t\t\t%ld\n", times_over(philo,
+		// 		(philo->data)->time_to_sleep));
 		usleep(times_over(philo, (philo->data)->time_to_sleep) * 1000);
 		philo->data->is_dead = index + 1;
 	}
@@ -107,15 +110,15 @@ void	eat_routine(t_philo *philo, int index, int nb_philo)
 	{
 		pthread_mutex_lock(&(((philo->data)->lock_tab)[index]));
 		gettimeofday(&time, NULL);
-		printf("%ld%ld %d has taken a fork\n", (time.tv_sec), (time.tv_usec)
-			/ 1000, index + 1);
+		printf("%ld %d has taken a fork\n", time_diff((philo->data)->initial_time, time), index + 1);
 		pthread_mutex_lock(&(((philo->data)->lock_tab)[nb_philo - 1]));
 		gettimeofday(&time, NULL);
-		printf("%ld%ld %d has taken a fork\n", (time.tv_sec), (time.tv_usec)
-			/ 1000, index + 1);
+		printf("%ld %d has taken a fork\n", time_diff((philo->data)->initial_time, time), index + 1);
 		gettimeofday(&time, NULL);
-		printf("%ld%ld %d is eating\n", (time.tv_sec), (time.tv_usec) / 1000,
+		printf("%ld %d is eating\n", time_diff((philo->data)->initial_time, time),
 			index + 1);
+		gettimeofday(&time, NULL);
+		philo->last_meal = time;
 		philo->nb_eat += 1;
 		if (philo->nb_eat == (philo->data)->nb_meal)
 			(philo->data)->is_full += 1;
@@ -133,15 +136,15 @@ void	eat_routine(t_philo *philo, int index, int nb_philo)
 	{
 		pthread_mutex_lock(&(((philo->data)->lock_tab)[index - 1]));
 		gettimeofday(&time, NULL);
-		printf("%ld%ld %d has taken a fork\n", (time.tv_sec), (time.tv_usec)
-			/ 1000, index + 1);
+		printf("%ld %d has taken a fork\n", time_diff((philo->data)->initial_time, time), index + 1);
 		pthread_mutex_lock(&(((philo->data)->lock_tab)[index]));
 		gettimeofday(&time, NULL);
-		printf("%ld%ld %d has taken a fork\n", (time.tv_sec), (time.tv_usec)
-			/ 1000, index + 1);
+		printf("%ld %d has taken a fork\n", time_diff((philo->data)->initial_time, time), index + 1);
 		gettimeofday(&time, NULL);
-		printf("%ld%ld %d is eating\n", (time.tv_sec), (time.tv_usec) / 1000,
+		printf("%ld %d is eating\n", time_diff((philo->data)->initial_time, time),
 			index + 1);
+		gettimeofday(&time, NULL);
+		philo->last_meal = time;
 		philo->nb_eat += 1;
 		if (philo->nb_eat == (philo->data)->nb_meal)
 		{
@@ -164,15 +167,12 @@ void	eat_routine(t_philo *philo, int index, int nb_philo)
 void	*philo_behavior(void *arg)
 {
 	t_philo			*philo;
-	struct timeval	time_start;
 
 	philo = (t_philo *)arg;
 	// if (philo->index % 2 == 1)
 	// 	usleep(100);
 	while (1)
 	{
-		gettimeofday(&time_start, NULL);
-		philo->last_meal = tv_to_ms(time_start);
 		eat_routine(philo, philo->index, (philo->data)->nb_philo);
 		if ((philo->data)->is_dead > 0
 			|| (philo->data)->is_full == (philo->data)->nb_philo)
@@ -188,6 +188,7 @@ void	*philo_behavior(void *arg)
 	}
 	return (NULL);
 }
+		// printf("\t\t\t\t\tlast meal of philo %d is %ld", (philo->index) + 1, philo->last_meal);
 
 void	begin_thread(t_philo *philo)
 {
@@ -230,7 +231,7 @@ void	philo(t_data *data)
 	// begin all thread
 	i = 0;
 	gettimeofday(&time, NULL);
-	data->initial_time = tv_to_ms(time);
+	data->initial_time = time;
 	while (i < data->nb_philo)
 	{
 		// t_philo
@@ -243,15 +244,14 @@ void	philo(t_data *data)
 		if (data->is_dead > 0)
 		{
 			gettimeofday(&time, NULL);
-			printf("%ld%ld %d is dead\n", (time.tv_sec), (time.tv_usec) / 1000,
+			printf("%ld %d is dead\n", time_diff(data->initial_time, time),
 				data->is_dead);
 			break ;
 		}
 		if (data->is_full == data->nb_philo)
 		{
 			gettimeofday(&time, NULL);
-			printf("%ld%ld everybody has eaten\n", (time.tv_sec), (time.tv_usec)
-				/ 1000);
+			printf("%ld everybody has eaten\n", time_diff(data->initial_time, time));
 			break ;
 		}
 	}
