@@ -3,43 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 23:44:03 by alex              #+#    #+#             */
-/*   Updated: 2025/06/12 17:57:33 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/15 00:37:21 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	*create_fork_tab(int nb_philo)
+int	fill_tab_lock(pthread_mutex_t **lock_tab, int index)
 {
-	int	*philo_tab;
-	int	i;
+	pthread_mutex_t	*lock;
 
-	i = 0;
-	philo_tab = malloc(nb_philo * sizeof(int));
-	if (!philo_tab)
+	lock = malloc(sizeof(pthread_mutex_t));
+	if(!lock)
 		return (0);
-	while (i < nb_philo)
-		philo_tab[i++] = 1;
-	return (philo_tab);
-}
-
-void	fill_tab_lock(pthread_mutex_t *lock_tab, int index)
-{
-	pthread_mutex_t	lock;
-
-	pthread_mutex_init(&lock, NULL);
+	pthread_mutex_init(lock, NULL);
 	lock_tab[index] = lock;
+	return (1);
 }
 
-pthread_mutex_t	*create_lock_tab(t_data *data)
+pthread_mutex_t *create_lock()
 {
-	pthread_mutex_t	*lock_tab;
+	pthread_mutex_t	*lock;
+
+	lock = malloc(sizeof(pthread_mutex_t));
+	if(!lock)
+		return (NULL);
+	pthread_mutex_init(lock, NULL);
+	return (lock);
+}
+
+pthread_mutex_t	**create_lock_tab(t_data *data)
+{
+	pthread_mutex_t	**lock_tab;
 	int				i;
 
-	lock_tab = malloc(data->nb_philo * sizeof(pthread_mutex_t));
+	lock_tab = malloc(data->nb_philo * sizeof(pthread_mutex_t *));
 	if (!lock_tab)
 		return (NULL);
 	i = 0;
@@ -61,6 +62,9 @@ void	data_init(t_data *data, char **av)
 	data->is_dead = 0;
 	data->is_full = 0;
 	data->lock_tab = create_lock_tab(data);
+	data->lock_dead = create_lock();
+	data->lock_time = create_lock();
+	data->lock_write = create_lock();
 }
 
 int	main(int ac, char **av)
@@ -78,5 +82,5 @@ int	main(int ac, char **av)
 		return (printf("Can't be negative\n"));
 	data_init(&data, av);
 	philo(&data);
-	return (1);
+	return (free_data(&data), 1);
 }

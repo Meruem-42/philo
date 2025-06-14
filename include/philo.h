@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/12 17:46:40 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/15 00:37:08 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ typedef struct s_data
 	int				is_dead;
 	int				is_full;
 	struct timeval	initial_time;
-	pthread_mutex_t	*lock_tab;
-	pthread_mutex_t	lock_dead;
+	pthread_mutex_t	**lock_tab;
+	pthread_mutex_t	*lock_dead;
+	pthread_mutex_t	*lock_time;	
+	pthread_mutex_t	*lock_write;	
 }					t_data;
 
 typedef struct s_philo
@@ -48,5 +50,7 @@ int					ft_atoi(const char *str);
 time_t				time_diff(struct timeval start, struct timeval end);
 
 time_t				tv_to_ms(struct timeval time);
+
+void				free_data(t_data *data);
 
 #endif

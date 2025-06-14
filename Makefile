@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -g3
 
 NAME = philo
 
-SRC =	src/ft_atoi.c src/philo.c src/main.c
+SRC =	src/ft_atoi.c src/philo.c src/main.c src/free_all.c
 
 GREEN = \033[32m
 YELLOW = \033[33m
