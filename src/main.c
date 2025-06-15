@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 23:44:03 by alex              #+#    #+#             */
-/*   Updated: 2025/06/15 00:37:21 by alex             ###   ########.fr       */
+/*   Updated: 2025/06/15 15:46:55 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ int	fill_tab_lock(pthread_mutex_t **lock_tab, int index)
 	pthread_mutex_t	*lock;
 
 	lock = malloc(sizeof(pthread_mutex_t));
-	if(!lock)
+	if (!lock)
 		return (0);
 	pthread_mutex_init(lock, NULL);
 	lock_tab[index] = lock;
 	return (1);
 }
 
-pthread_mutex_t *create_lock()
+pthread_mutex_t	*create_lock(void)
 {
 	pthread_mutex_t	*lock;
 
 	lock = malloc(sizeof(pthread_mutex_t));
-	if(!lock)
+	if (!lock)
 		return (NULL);
 	pthread_mutex_init(lock, NULL);
 	return (lock);
@@ -65,6 +65,8 @@ void	data_init(t_data *data, char **av)
 	data->lock_dead = create_lock();
 	data->lock_time = create_lock();
 	data->lock_write = create_lock();
+	data->lock_exit = create_lock();
+	data->lock_eat = create_lock();
 }
 
 int	main(int ac, char **av)
@@ -74,6 +76,8 @@ int	main(int ac, char **av)
 	(void)ac;
 	if (ac < 5)
 		return (printf("not enough arguments\n"));
+	if (ac > 6)
+		return (printf("too many arguments\n"));
 	if (ft_atoi(av[1]) < 0)
 		return (printf("not enough philosophers\n"));
 	if (ft_atoi(av[2]) < 0 || ft_atoi(av[3]) < 0 || ft_atoi(av[4]) < 0)
