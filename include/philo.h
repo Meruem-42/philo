@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/15 19:02:00 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:51:02 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_data
 	pthread_mutex_t	*lock_dead;
 	pthread_mutex_t	*lock_time;
 	pthread_mutex_t	*lock_write;
-	pthread_mutex_t	*lock_exit;
 	pthread_mutex_t	*lock_eat;
 }					t_data;
 
@@ -62,9 +61,9 @@ time_t				time_diff(struct timeval start, struct timeval end);
 
 void				print_message(t_philo *philo, char *str);
 
-void				begin_thread(t_philo *philo);
+int					begin_thread(t_philo *philo);
 
-void				monitor_thread(t_philo *philo);
+int					monitor_thread(t_philo *philo);
 
 void				eat_routine(t_philo *philo);
 

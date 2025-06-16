@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:42:46 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/06/15 19:01:46 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:24:37 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ void	*philo_behavior(void *arg)
 	return (NULL);
 }
 
-void	begin_thread(t_philo *philo)
+int	begin_thread(t_philo *philo)
 {
 	pthread_t thread;
 	struct timeval time;
 
 	gettimeofday(&time, NULL);
 	philo->last_meal = time;
-	pthread_create(&thread, NULL, philo_behavior, philo);
+	if (pthread_create(&thread, NULL, philo_behavior, philo) != 0)
+		return (0);
 	pthread_detach(thread);
+	return (1);
 }

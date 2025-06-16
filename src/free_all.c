@@ -6,33 +6,37 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:12:46 by alex              #+#    #+#             */
-/*   Updated: 2025/06/15 15:21:08 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:56:42 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+void	free_lock(pthread_mutex_t *lock)
+{
+	if (lock)
+	{
+		pthread_mutex_destroy(lock);
+		free(lock);
+	}
+}
 
 void	free_data(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	// printf("\t\t\t\t%d\n", data->time_to_eat);
-	while (i < data->nb_philo)
+	if (data->lock_tab)
 	{
-		pthread_mutex_destroy(data->lock_tab[i]);
-		free(data->lock_tab[i]);
-		i++;
+		while (i < data->nb_philo)
+		{
+			free_lock(data->lock_tab[i]);
+			i++;
+		}
+		free(data->lock_tab);
 	}
-	free(data->lock_tab);
-	pthread_mutex_destroy(data->lock_time);
-	free(data->lock_time);
-	pthread_mutex_destroy(data->lock_dead);
-	free(data->lock_dead);
-	pthread_mutex_destroy(data->lock_write);
-	free(data->lock_write);
-	pthread_mutex_destroy(data->lock_exit);
-	free(data->lock_exit);
-	pthread_mutex_destroy(data->lock_eat);
-	free(data->lock_eat);
+	free_lock(data->lock_time);
+	free_lock(data->lock_dead);
+	free_lock(data->lock_write);
+	free_lock(data->lock_eat);
 }

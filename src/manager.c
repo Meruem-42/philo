@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:53:49 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/06/15 18:54:14 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:25:22 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ void	*manager_thread(void *arg)
 	}
 }
 
-void	monitor_thread(t_philo *philo)
+int	monitor_thread(t_philo *philo)
 {
 	pthread_t thread;
 
-	pthread_create(&thread, NULL, manager_thread, philo);
+	if (pthread_create(&thread, NULL, manager_thread, philo) != 0)
+		return (0);
 	pthread_join(thread, NULL);
+	return (1);
 }
