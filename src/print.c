@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:45:50 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/06/15 18:46:09 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:26:27 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_message(t_philo *philo, char *str)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	pthread_mutex_lock((philo->data->lock_write));
 	gettimeofday(&time, NULL);

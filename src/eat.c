@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:48:04 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/06/15 18:52:52 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:43:21 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,6 @@ void	meal_count(t_philo *philo)
 	if (philo->nb_eat == (philo->data)->nb_meal)
 		(philo->data)->is_full += 1;
 	pthread_mutex_unlock((philo->data->lock_eat));
-}
-
-void	meal_time(t_philo *philo)
-{
-	time_t			temp_time;
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	temp_time = tv_to_ms(time) + (philo->data)->time_to_eat;
-	while (tv_to_ms(time) < temp_time)
-	{
-		gettimeofday(&time, NULL);
-		usleep(100);
-	}
 }
 
 void	fork_assignement(t_philo *philo)
@@ -68,9 +54,26 @@ int	check_fork(t_philo *philo, int fork_l, int fork_r)
 	return (1);
 }
 
+int	meal_time(t_philo *philo)
+{
+	time_t			temp_time;
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	temp_time = tv_to_ms(time) + (philo->data)->time_to_eat;
+	while (tv_to_ms(time) < temp_time)
+	{
+		if (check_fork(philo, philo->fork_l, philo->fork_r) == 0)
+			return (0);
+		gettimeofday(&time, NULL);
+		usleep(100);
+	}
+	return (1);
+}
+
 void	eat_routine(t_philo *philo)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	fork_assignement(philo);
 	pthread_mutex_lock((((philo->data)->lock_tab)[philo->fork_l]));
@@ -87,7 +90,8 @@ void	eat_routine(t_philo *philo)
 	pthread_mutex_lock((philo->data->lock_time));
 	philo->last_meal = time;
 	pthread_mutex_unlock((philo->data->lock_time));
-	meal_time(philo);
+	if (meal_time(philo) == 0)
+		return ;
 	meal_count(philo);
 	pthread_mutex_unlock((((philo->data)->lock_tab)[philo->fork_r]));
 	pthread_mutex_unlock((((philo->data)->lock_tab)[philo->fork_l]));

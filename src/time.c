@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:46:31 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/06/15 18:46:55 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:26:56 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ time_t	tv_to_ms(struct timeval time)
 
 time_t	time_diff(struct timeval start, struct timeval end)
 {
-	time_t start_full;
-	time_t end_full;
+	time_t	start_full;
+	time_t	end_full;
 
 	start_full = tv_to_ms(start);
 	end_full = tv_to_ms(end);

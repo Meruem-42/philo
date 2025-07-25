@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:53:49 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/06/16 17:25:22 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/07/25 20:18:16 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_iffull(t_philo *philo)
 		printf("%ld everybody has eaten\n",
 			time_diff(philo[0].data->initial_time, time));
 		pthread_mutex_unlock((philo[0].data->lock_write));
-		return (usleep(philo[0].data->time_to_eat * 1000), 0);
+		return (usleep(1000), 0);
 	}
 	pthread_mutex_unlock((philo[0].data->lock_eat));
 	return (1);
@@ -49,7 +49,7 @@ int	check_ifdead(t_philo *philo, int index)
 		printf("%ld %d is dead\n", time_diff(philo[0].data->initial_time, time),
 			index + 1);
 		pthread_mutex_unlock((philo[0].data->lock_write));
-		return (usleep(philo[0].data->time_to_eat * 1000), 0);
+		return (usleep(1000), 0);
 	}
 	pthread_mutex_unlock((philo[0].data->lock_time));
 	return (1);
@@ -77,7 +77,7 @@ void	*manager_thread(void *arg)
 
 int	monitor_thread(t_philo *philo)
 {
-	pthread_t thread;
+	pthread_t	thread;
 
 	if (pthread_create(&thread, NULL, manager_thread, philo) != 0)
 		return (0);
