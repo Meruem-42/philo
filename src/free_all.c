@@ -31,18 +31,33 @@ void	free_data(t_data *data)
 	{
 		while (i < data->nb_philo)
 		{
-			pthread_mutex_lock((data->lock_tab[i]));
-			free_lock(data->lock_tab[i]);
+			if (data->lock_tab[i])
+			{
+				pthread_mutex_lock((data->lock_tab[i]));
+				free_lock(data->lock_tab[i]);
+			}
 			i++;
 		}
 		free(data->lock_tab);
 	}
-	pthread_mutex_lock((data->lock_time));
-	free_lock(data->lock_time);
-	pthread_mutex_lock((data->lock_dead));
-	free_lock(data->lock_dead);
-	pthread_mutex_lock((data->lock_write));
-	free_lock(data->lock_write);
-	pthread_mutex_lock((data->lock_eat));
-	free_lock(data->lock_eat);
+	if (data->lock_time)
+	{
+		pthread_mutex_lock((data->lock_time));
+		free_lock(data->lock_time);
+	}
+	if (data->lock_dead)
+	{
+		pthread_mutex_lock((data->lock_dead));
+		free_lock(data->lock_dead);
+	}
+	if (data->lock_write)
+	{
+		pthread_mutex_lock((data->lock_write));
+		free_lock(data->lock_write);
+	}
+	if (data->lock_eat)
+	{
+		pthread_mutex_lock((data->lock_eat));
+		free_lock(data->lock_eat);
+	}
 }

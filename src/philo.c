@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:44:37 by alex              #+#    #+#             */
-/*   Updated: 2025/06/16 17:28:24 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:53:37 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	philo(t_data *data)
 		if (begin_thread(&(philo_tab[i++])) == 0)
 			return (free(philo_tab));
 	}
-	monitor_thread(philo_tab);
+	if(monitor_thread(philo_tab) == 0)
+		return ;
 	return (free(philo_tab));
 }

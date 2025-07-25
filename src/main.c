@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 23:44:03 by alex              #+#    #+#             */
-/*   Updated: 2025/06/16 18:03:38 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:49:55 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	fill_tab_lock(pthread_mutex_t **lock_tab, int index)
 
 	lock = malloc(sizeof(pthread_mutex_t));
 	if (!lock)
-		return (0);
+		return (lock_tab[index] = NULL, 0);
 	if (pthread_mutex_init(lock, NULL) != 0)
 		return (free(lock), lock = NULL, lock_tab[index] = lock, 0);
 	lock_tab[index] = lock;
@@ -53,8 +53,8 @@ pthread_mutex_t	**create_lock_tab(t_data *data)
 			i = 0;
 			while (lock_tab[i])
 			{
-				pthread_mutex_destroy(data->lock_tab[i]);
-				free(data->lock_tab[i]);
+				pthread_mutex_destroy(lock_tab[i]);
+				free(lock_tab[i]);
 				i++;
 			}
 			return (free(lock_tab), NULL);
