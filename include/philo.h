@@ -5,15 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 13:45:35 by alex              #+#    #+#             */
-/*   Updated: 2025/06/16 17:51:02 by aherlaud         ###   ########.fr       */
+/*   Created: 2025/07/22 11:57:06 by aherlaud          #+#    #+#             */
+/*   Updated: 2025/07/22 17:35:54 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <pthread.h>
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
@@ -66,5 +67,7 @@ int					begin_thread(t_philo *philo);
 int					monitor_thread(t_philo *philo);
 
 void				eat_routine(t_philo *philo);
+
+int					check_int_range(const char *str);
 
 #endif

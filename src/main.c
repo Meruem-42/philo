@@ -90,17 +90,18 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 
-	(void)ac;
 	if (ac < 5)
-		return (printf("not enough arguments\n"));
-	if (ac > 6)
-		return (printf("too many arguments\n"));
-	if (ft_atoi(av[1]) < 0)
-		return (printf("not enough philosophers\n"));
+		return (printf("not enough args\n"), 0);
+	if (!check_int_range(av[1]) || !check_int_range(av[2])
+		|| !check_int_range(av[3]) || !check_int_range(av[4])
+		|| (av[5] && !check_int_range(av[5])))
+		return (printf("only int min or int max range\n"));
+	if (ft_atoi(av[1]) < 1)
+		return (printf("not enough philosophers\n"), 0);
 	if (ft_atoi(av[2]) < 0 || ft_atoi(av[3]) < 0 || ft_atoi(av[4]) < 0)
-		return (printf("latence can't be negative\n"));
-	if (av[3] && ft_atoi(av[3]) < 0)
-		return (printf("Can't be negative\n"));
+		return (printf("latence can't be negative\n"), 0);
+	if (av[5] && ft_atoi(av[5]) < 1)
+		return (printf("number of meal can't be null or negative\n"), 0);
 	if (data_init(&data, av) == 0)
 		return (free_data(&data), 0);
 	philo(&data);
